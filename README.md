@@ -60,6 +60,11 @@ Sample Entry:
     "post_tokens": ["and","this","is","why","i","end","up","with","nigger","trainee","doctors","who","can","not","speak","properly","lack","basic","knowledge","of","biology","it","truly","scary","if","the","public","only","knew"]
   }
 }
+
+
+post_id : Unique id for each post
+annotators : The list of annotations.
+
 ~~~
 
 #####  :thumbsup: The repo is still in active developements. Feel free to create an [issue](https://github.com/punyajoy/HateXplain/issues) !!  :thumbsup:
