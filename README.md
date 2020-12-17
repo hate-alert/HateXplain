@@ -65,7 +65,14 @@ Sample Entry:
 
 
 post_id : Unique id for each post
-annotators : The list of annotations.
+annotators : The list of annotations from each annotator.
+annotators[label] : The label assigned by the annotator to this post. Possible values: [Hatespeech, Offensive, Normal]
+annotators[annotator_id] : The unique Id assigned to each annotator
+annotators[target] : A list of target community present in the post.
+rationales : A list of rationales selected by annotators. Each rationales represents a list with values 0 or 1. A value of 1 means that the token is part of the rationale selected by the annotator. To get the particular token, we can use the same index position in "post_tokens".
+post_tokens : The list of tokens representing the post which was annotated.
+
+
 
 ~~~
 
