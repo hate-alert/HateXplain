@@ -23,4 +23,4 @@ Can we use explainations to improve out hate speech models ?
 ~~~
 
 
-#####  :thumbsup: The repo is still in active developements. Feel free to create an [issue](https://github.com/punyajoy/DE-LIMIT/issues) !!  :thumbsup:
+#####  :thumbsup: The repo is still in active developements. Feel free to create an [issue](https://github.com/punyajoy/HateXplain/issues) !!  :thumbsup:
