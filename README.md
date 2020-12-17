@@ -32,7 +32,6 @@ Hate speech is a challenging issue plaguing the online social media. While bette
 
 Location: Data/dataset.json
 
-***Dataset Format***
 Sample Entry:
 ~~~
 {
