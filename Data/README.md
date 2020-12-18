@@ -10,7 +10,7 @@ encoder = LabelEncoder()
 encoder.classes_ = np.load(<name_of_the_file>,allow_pickle=True)
 ~~~
 
-###Dataset Format###
+### Dataset Format ###
 
 Sample Entry:
 ~~~
@@ -42,15 +42,16 @@ Sample Entry:
     "post_tokens": ["and","this","is","why","i","end","up","with","nigger","trainee","doctors","who","can","not","speak","properly","lack","basic","knowledge","of","biology","it","truly","scary","if","the","public","only","knew"]
   }
 }
-
-post_id : Unique id for each post
-annotators : The list of annotations from each annotator.
-annotators[label] : The label assigned by the annotator to this post. Possible values: [Hatespeech, Offensive, Normal]
-annotators[annotator_id] : The unique Id assigned to each annotator
-annotators[target] : A list of target community present in the post.
-rationales : A list of rationales selected by annotators. Each rationales represents a list with values 0 or 1. A value of 1 means that the token is part of the rationale selected by the annotator. To get the particular token, we can use the same index position in "post_tokens".
-post_tokens : The list of tokens representing the post which was annotated.
 ~~~
+
+:small_blue_diamond:post_id : Unique id for each post<br/>
+:small_blue_diamond:annotators : The list of annotations from each annotator<br/>
+:small_blue_diamond:annotators[label] : The label assigned by the annotator to this post. Possible values: [Hatespeech, Offensive, Normal]<br/>
+:small_blue_diamond:annotators[annotator_id] : The unique Id assigned to each annotator<br/>
+:small_blue_diamond:annotators[target] : A list of target community present in the post<br/>
+:small_blue_diamond:rationales : A list of rationales selected by annotators. Each rationales represents a list with values 0 or 1. A value of 1 means that the token is part of the rationale selected by the annotator. To get the particular token, we can use the same index position in "post_tokens"<br/>
+:small_blue_diamond:post_tokens : The list of tokens representing the post which was annotated<br/>
+
 
 ### Post ids divisions
 [Post_id_divisions](https://github.com/punyajoy/HateXplain/blob/master/Data/post_id_divisions.json) has a dictionary having train, valid and test post ids that are used to divide the dataset into train, val and test set in the ratio of 8:1:1.
