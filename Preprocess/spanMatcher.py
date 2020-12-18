@@ -71,13 +71,32 @@ def giveSpanList(row,tokens,string1,data_type):
 
 
 def returnMask(row,params,tokenizer):
+    
     text_tokens=row['text']
-    mask_all= [row['explain1'],row['explain2'],row['explain3']]
+    
+    
+    
+    ##### a very rare corner case
+    if(len(text_tokens)==0):
+        text_tokens=['dummy']
+        print("length of text ==0")
+    #####
+    
+    
+    mask_all= row['rationales']
+    mask_all_temp=mask_all
+    count_temp=0
+    while(len(mask_all_temp)!=3):
+        mask_all_temp.append([0]*len(text_tokens))
     
     word_mask_all=[]
     word_tokens_all=[]
     
-    for mask in mask_all:
+    for mask in mask_all_temp:
+        if(mask[0]==-1):
+            mask=[0]*len(mask)
+        
+        
         list_pos=[]
         mask_pos=[]
         
@@ -133,6 +152,14 @@ def returnMask(row,params,tokenizer):
 
         word_mask_all.append(word_mask)
         word_tokens_all.append(word_tokens)
+        
+#     for k in range(0,len(mask_all)):
+#          if(mask_all[k][0]==-1):
+#             word_mask_all[k] = [-1]*len(word_mask_all[k])
+    if(len(mask_all)==0):
+        word_mask_all=[]
+    else:    
+        word_mask_all=word_mask_all[0:len(mask_all)]
     return word_tokens_all[0],word_mask_all    
         
         
@@ -374,17 +401,22 @@ def returnMaskonetime(row,params,tokenizer,debug=False,data_type='old'):
 
         word_mask_all.append(word_mask)
         word_tokens_all.append(word_tokens)
+    if(row['old_vs_new']=='new'):
+        if(row['final_annotation'] in ['normal','non-toxic']):
+            for i in range(0,3):
+                word_mask_all[i]=[-1]*len(word_mask_all[i])
+        else:
+            word_mask_all[2] = [-1]*len(word_mask_all[2])
+    else:
+        for i in range(0,3):
+            if(row['pred'+str(i+1)] in ['normal','non-toxic']):
+                word_mask_all[i]=[-1]*len(word_mask_all[i])
+        
     #print(len(word_tokens_all))    
     return word_tokens_all[0],word_mask_all,string_parts_all,list_pos_all,span_list_all,mask_pos_all
    
 
 
 
-
-
-if __name__== "__main__":
-	print(returnMask(
-			"Laura Loomer raped me while screaming at me in her disgusting kike language and said we must exterminate the goyim. #LauraLoomer #Loomergate",
-			["(51--75)disgusting kike language||(93--114)exterminate the goyim","{}","{}"]))
 
 

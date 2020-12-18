@@ -10,12 +10,14 @@ import glob
 from transformers import BertTokenizer
 from transformers import BertForSequenceClassification, AdamW, BertConfig
 import random
+import pandas as pd
 from transformers import BertTokenizer
 from Models.utils import masked_cross_entropy,fix_the_random,format_time,save_normal_model,save_bert_model
 from sklearn.metrics import accuracy_score,f1_score
 from tqdm import tqdm
 from TensorDataset.datsetSplitter import createDatasetSplit
 from TensorDataset.dataLoader import combine_features
+from Preprocess.dataCollect import collect_data,set_name
 from sklearn.metrics import accuracy_score,f1_score,roc_auc_score,recall_score,precision_score
 #from pandas_ml import ConfusionMatrix
 import matplotlib.pyplot as plt
@@ -190,7 +192,7 @@ def Eval_phase(params,which_files='test',model=None,test_dataloader=None,device=
         neptune.log_metric('test_rocauc',testrocauc)
         neptune.stop()
 
-    return testf1,testacc,testprecision,testrecall,testrocauc
+    return testf1,testacc,testprecision,testrecall,testrocauc,logits_all_final
 
     
     
@@ -213,7 +215,6 @@ def train_model(params,device):
         
         
     print(params['weights'])
-    
     train_dataloader =combine_features(train,params,is_train=True)   
     validation_dataloader=combine_features(val,params,is_train=False)
     test_dataloader=combine_features(test,params,is_train=False)
@@ -343,9 +344,9 @@ def train_model(params,device):
 
         # Store the loss value for plotting the learning curve.
         loss_values.append(avg_train_loss)
-        train_fscore,train_accuracy,train_precision,train_recall,train_roc_auc=Eval_phase(params,'train',model,train_dataloader,device)
-        val_fscore,val_accuracy,val_precision,val_recall,val_roc_auc=Eval_phase(params,'val',model,validation_dataloader,device)
-        test_fscore,test_accuracy,test_precision,test_recall,test_roc_auc=Eval_phase(params,'test',model,test_dataloader,device)
+        train_fscore,train_accuracy,train_precision,train_recall,train_roc_auc,_=Eval_phase(params,'train',model,train_dataloader,device)
+        val_fscore,val_accuracy,val_precision,val_recall,val_roc_auc,_=Eval_phase(params,'val',model,validation_dataloader,device)
+        test_fscore,test_accuracy,test_precision,test_recall,test_roc_auc,logits_all_final=Eval_phase(params,'test',model,test_dataloader,device)
 
         #Report the final accuracy for this validation run.
         if(params['logging']=='neptune'):	
@@ -368,7 +369,8 @@ def train_model(params,device):
             neptune.log_metric('train_rocauc',train_roc_auc)
 
             
-            
+        
+    
         if(val_fscore > best_val_fscore):
             print(val_fscore,best_val_fscore)
             best_val_fscore=val_fscore
@@ -382,11 +384,32 @@ def train_model(params,device):
             best_val_recall = val_recall
             best_test_recall = test_recall
             
+            ##### temp remove later
+            temp_filename=set_name(params)
+            temp_dataset= pd.read_pickle(temp_filename)
+            with open('Data/post_id_divisions.json', 'r') as fp:
+                temp_post_id_dict=json.load(fp)
+
+            temp_X_test=temp_dataset[temp_dataset['Post_id'].isin(temp_post_id_dict['test'])]
+
+            
+            
+            data = {'post_ids':  temp_X_test['Post_id'],
+                    'probab': logits_all_final}
+
+            df = pd.DataFrame (data, columns = list(data.keys()))
+            df.to_csv('predictions.csv')
+
+            
+            
+            
+            
             if(params['bert_tokens']):
                 print('Loading BERT tokenizer...')
                 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', do_lower_case=False)
                 save_bert_model(model,tokenizer,params)
             else:
+                print("Saving model")
                 save_normal_model(model,params)
 
     if(params['logging']=='neptune'):
@@ -503,8 +526,8 @@ params = Merge(params_data,common_hp,params_bert,params_other)
 
 
 dict_data_folder={
-      '2':{'data_file':'Data/training_data_final_two.json','class_label':'Data/classes_two.npy'},
-      '3':{'data_file':'Data/training_data_final.json','class_label':'Data/classes.npy'}
+      '2':{'data_file':'Data/dataset.json','class_label':'Data/classes_two.npy'},
+      '3':{'data_file':'Data/dataset.json','class_label':'Data/classes.npy'}
 }
 
 if __name__=='__main__': 
@@ -548,10 +571,10 @@ if __name__=='__main__':
              
 
         params['best_params']=True 
-    
-    
-    neptune.init(project_name,api_token=api_token)
-    neptune.set_project(project_name)
+    params['logging']='local'
+    if(params['logging']=='neptune'):
+        neptune.init(project_name,api_token=api_token)
+        neptune.set_project(project_name)
     torch.autograd.set_detect_anomaly(True)
     if torch.cuda.is_available() and params['device']=='cuda':    
         # Tell PyTorch to use the GPU.    
@@ -564,10 +587,10 @@ if __name__=='__main__':
         
     print(args)
     params['variance']=1
-    params['logging']='local'
+   
     params['epochs'] =5
-    params['to_save']=False
-    params['num_classes']=int(params['num_classes'])
+    params['to_save']=True
+    params['num_classes']=3
     params['data_file']=dict_data_folder[str(params['num_classes'])]['data_file']
     params['class_names']=dict_data_folder[str(params['num_classes'])]['class_label']
     

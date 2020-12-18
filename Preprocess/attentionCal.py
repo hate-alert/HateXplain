@@ -88,48 +88,41 @@ def decay(old_distribution,params):
     return new_distribution
 
 def aggregate_attention(at_mask,row,params):
-    if(len(at_mask[0])==len(at_mask[1])==len(at_mask[2])):
-        if(row['final_label'] in ['normal','non-toxic']):
-            at_mask_fin=[1/len(at_mask[0]) for x in at_mask[0]]
-        else:
-            at_mask_fin=[]
-       
-            if(row['old_vs_new'] == 'old'):
-                for i in range(0,3):
-                    if(row['label'+str(i+1)] not in ['normal','non-toxic']):
-                        at_mask_fin.append(at_mask[i])
-            else:
-                for i in range(0,2):
-                    at_mask_fin.append(at_mask[i])
-
-            if(params['type_attention']=='sigmoid'):
-                at_mask_fin=int(params['variance'])*at_mask_fin
-                at_mask_fin=np.mean(at_mask_fin,axis=0)
-                at_mask_fin=sigmoid(at_mask_fin)
-            elif (params['type_attention']=='softmax'):
-                at_mask_fin=int(params['variance'])*at_mask_fin
-                at_mask_fin=np.mean(at_mask_fin,axis=0)
-                at_mask_fin=softmax(at_mask_fin)
-            elif (params['type_attention']=='neg_softmax'):
-                at_mask_fin=int(params['variance'])*at_mask_fin
-                at_mask_fin=np.mean(at_mask_fin,axis=0)
-                at_mask_fin=neg_softmax(at_mask_fin)
-            elif(params['type_attention']=='raw'):
-                pass
-            
-            elif(params['type_attention']=='individual'):
-                pass
-        if(params['decay']==True):
-             at_mask_fin=decay(at_mask_fin,params)
-            
-        return at_mask_fin
+    if(row['final_label'] in ['normal','non-toxic']):
+        at_mask_fin=[1/len(at_mask[0]) for x in at_mask[0]]
     else:
-        print("error at calculating attention")
-        print(len(at_mask[0]),len(at_mask[1]),len(at_mask[2]))
-        if(params['type_attention']=='individual'):
-            return at_mask
-        else:
-            return at_mask[0]   
+        at_mask_fin=at_mask
+
+#         if(at_mask[2][0]==-1):
+#             for i in range(0,2):
+#                 at_mask_fin.append(at_mask[i])
+#         else:
+#             for i in range(0,3):
+#                 if(row['label'+str(i+1)] not in ['normal','non-toxic']):
+#                     at_mask_fin.append(at_mask[i])
+
+        if(params['type_attention']=='sigmoid'):
+            at_mask_fin=int(params['variance'])*at_mask_fin
+            at_mask_fin=np.mean(at_mask_fin,axis=0)
+            at_mask_fin=sigmoid(at_mask_fin)
+        elif (params['type_attention']=='softmax'):
+            at_mask_fin=int(params['variance'])*at_mask_fin
+            at_mask_fin=np.mean(at_mask_fin,axis=0)
+            at_mask_fin=softmax(at_mask_fin)
+        elif (params['type_attention']=='neg_softmax'):
+            at_mask_fin=int(params['variance'])*at_mask_fin
+            at_mask_fin=np.mean(at_mask_fin,axis=0)
+            at_mask_fin=neg_softmax(at_mask_fin)
+        elif(params['type_attention']=='raw'):
+            pass
+
+        elif(params['type_attention']=='individual'):
+            pass
+    if(params['decay']==True):
+         at_mask_fin=decay(at_mask_fin,params)
+
+    return at_mask_fin
+    
         
 #         if(label=="normal"):
 #             at_mask_fin=[1/len(at_mask[0]) for x in at_mask[0]]

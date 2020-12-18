@@ -60,17 +60,34 @@ def get_annotated_data(params):
         final_label=[]
         for i in range(1,4):
             temp['annotatorid'+str(i)]=data[key]['annotators'][i-1]['annotator_id']
-            temp['explain'+str(i)]=data[key]['annotators'][i-1]['rationales']
+#             temp['explain'+str(i)]=data[key]['annotators'][i-1]['rationales']
             temp['target'+str(i)]=data[key]['annotators'][i-1]['target']
             temp['label'+str(i)]=data[key]['annotators'][i-1]['label']
             final_label.append(temp['label'+str(i)])
 
         final_label_id=max(final_label,key=final_label.count)
-        if(final_label.count(final_label_id)==1):
-            temp['final_label']='undecided'
+        temp['rationales']=data[key]['rationales']
+            
+        if(params['class_names']=='Data/classes_two.npy'):
+            if(final_label.count(final_label_id)==1):
+                temp['final_label']='undecided'
+            else:
+                if(final_label_id in ['hatespeech','offensive']):
+                    final_label_id='toxic'
+                else:
+                    final_label_id='non-toxic'
+                temp['final_label']=final_label_id
+
+        
         else:
-            temp['final_label']=final_label_id
-        temp['old_vs_new']=data[key]['old_vs_new']
+            if(final_label.count(final_label_id)==1):
+                temp['final_label']='undecided'
+            else:
+                temp['final_label']=final_label_id
+
+        
+        
+        
         dict_data.append(temp)    
     temp_read = pd.DataFrame(dict_data)  
     return temp_read    
@@ -122,7 +139,7 @@ def get_training_data(data,params,tokenizer):
         annotation=row['final_label']
         
         if(annotation != 'undecided'):
-            selection_list=[row['explain1'],row['explain2'],row['explain3']]
+            selection_list=row['rationales']
             tokens_all,attention_masks=returnMask(row,params,tokenizer)
             attention_vector= aggregate_attention(attention_masks,row, params)     
             #print(len(attention_vector))
@@ -165,42 +182,7 @@ def get_training_data(data,params,tokenizer):
     training_data.to_pickle(filename)
     return training_data
 
-
-
-def get_training_data_one_time(data,params,tokenizer):
-    '''input: data is a dataframe text ids attentions labels column only'''
-    '''output: training data in the columns post_id,text, attention and labels '''
-
-    majority=params['majority']
-    
-    dict_data={}
-   
-    
-    print('total_data',len(data))
-    
-    for index,row in tqdm(data.iterrows(),total=len(data)):
-        post_id=row['post_id']
-        dict_data[post_id]={}
-        dict_data[post_id]['post_id']=post_id
-        dict_data[post_id]['annotators']=[]
-        dict_data[post_id]['old_vs_new']=row['old_vs_new']
-        selection_list=[row['explain1'],row['explain2'],row['explain3']]
-        tokens_all,attention_masks,string_parts,list_pos,span_list,list_mask \
-        =returnMaskonetime(row,params,tokenizer,data_type=row['old_vs_new'])
-        temp_users=[]
-        for i in range(1,4):
-            temp_user_dict={}
-            temp_user_dict['label']=row['pred'+str(i)]
-            temp_user_dict['rationales']=attention_masks[i-1]
-            temp_user_dict['annotator_id']=row['workerid'+str(i)]
-            temp_user_dict['target']=row['target'+str(i)]
-            temp_users.append(temp_user_dict)
-        dict_data[post_id]['post_tokens']=tokens_all
-        dict_data[post_id]['annotators']=temp_users
-    
-    return dict_data        
-
-
+##### Data collection for test data
 def get_test_data(data,params,message='text'):
     '''input: data is a dataframe text ids labels column only'''
     '''output: training data in the columns post_id,text (tokens) , attentions (normal) and labels'''
@@ -220,15 +202,10 @@ def get_test_data(data,params,message='text'):
     count_confused=0
     print('total_data',len(data))
     for index,row in tqdm(data.iterrows(),total=len(data)):
-        text=row[message]
-        row['message']=text
-        
         post_id=row['post_id']
-        
-        annotation_list=[row['pred1'],row['pred2'],row['pred3']]
-        annotation=row['final_annotation']
-        row['final_annotation']='normal'
-        tokens_all,attention_masks,_,_,_,_=returnMask(row,params,tokenizer,data_type=row['old_vs_new'])
+#         annotation_list=[row['label1'],row['label2'],row['label3']] 
+        annotation=row['final_label']
+        tokens_all,attention_masks=returnMask(row,params,tokenizer)
         attention_vector= aggregate_attention(attention_masks,row, params) 
         attention_list.append(attention_vector)
         text_list.append(tokens_all)
@@ -246,7 +223,142 @@ def get_test_data(data,params,message='text'):
     
     return training_data
 
+
+
+
+
+
+
+def convert_data(test_data,params,list_dict,rational_present=True,topk=2):
+    """this converts the data to be with or without the rationals based on the previous predictions"""
+    """input: params -- input dict, list_dict -- previous predictions containing rationals
+    rational_present -- whether to keep rational only or remove them only
+    topk -- how many words to select"""
+    
+    temp_dict={}
+    for ele in list_dict:
+        temp_dict[ele['annotation_id']]=ele['rationales'][0]['soft_rationale_predictions']
+    
+    test_data_modified=[]
+    
+    for index,row in tqdm(test_data.iterrows(),total=len(test_data)):
+        try:
+            attention=temp_dict[row['Post_id']]
+        except KeyError:
+            continue
+        topk_indices = sorted(range(len(attention)), key=lambda i: attention[i])[-topk:]
+        new_text =[]
+        new_attention =[]
+        if(rational_present):
+            if(params['bert_tokens']):
+                new_attention =[0]
+                new_text = [101]
+            for i in range(len(row['Text'])):
+                if(i in topk_indices):
+                    new_text.append(row['Text'][i])
+                    new_attention.append(row['Attention'][i])
+            if(params['bert_tokens']):
+                new_attention.append(0)
+                new_text.append(102)
+        else:
+            for i in range(len(row['Text'])):
+                if(i not in topk_indices):
+                    new_text.append(row['Text'][i])
+                    new_attention.append(row['Attention'][i])
+        test_data_modified.append([row['Post_id'],new_text,new_attention,row['Label']])
+
+    df=pd.DataFrame(test_data_modified,columns=test_data.columns)
+    return df
+
+
+
+def transform_dummy_data(sentences):
+    post_id_list=['temp']*len(sentences)
+    pred_list=['normal']*len(sentences)
+    explanation_list=[]
+    sentences_list=[]
+    for i in range(len(sentences)):
+        explanation_list.append([])
+        sentences_list.append(sentences[i].split(" "))
+    df=pd.DataFrame(list(zip(post_id_list,sentences_list,pred_list,pred_list,
+                             pred_list,explanation_list,pred_list)),
+                         columns=['post_id', 'text', 'label1','label2','label3', 'rationales', 'final_label'])
+    
+    return df
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##### ONLY FOR ONE TIME USAGE
+def get_training_data_one_time(data,params,tokenizer):
+    '''input: data is a dataframe text ids attentions labels column only'''
+    '''output: training data in the columns post_id,text, attention and labels '''
+
+    majority=params['majority']
+    
+    dict_data={}
+   
+    
+    print('total_data',len(data))
+    
+    for index,row in tqdm(data.iterrows(),total=len(data)):
+        post_id=row['post_id']
+        dict_data[post_id]={}
+        dict_data[post_id]['post_id']=post_id
+        dict_data[post_id]['annotators']=[]
+        #dict_data[post_id]['old_vs_new']=row['old_vs_new']
+        selection_list=[row['explain1'],row['explain2'],row['explain3']]
+        tokens_all,attention_masks,string_parts,list_pos,span_list,list_mask \
+        =returnMaskonetime(row,params,tokenizer,data_type=row['old_vs_new'])
+        temp_users=[]
         
+        rational_list=[]
+        
+        for i in range(1,4):
+            temp_user_dict={}
+            temp_user_dict['label']=row['pred'+str(i)]
+            #temp_user_dict['rationales']=attention_masks[i-1]
+            if(row['final_annotation'] not in ['normal','non-toxic','undecided']):
+                if(row['old_vs_new']=='new' and i<3):
+                    rational_list.append(attention_masks[i-1])
+                elif(row['old_vs_new']=='old' and (row['pred'+str(i)] not in ['normal','non-toxic'])):
+                    rational_list.append(attention_masks[i-1])
+
+            temp_user_dict['annotator_id']=row['workerid'+str(i)]
+            temp_user_dict['target']=row['target'+str(i)]
+            temp_users.append(temp_user_dict)
+            
+            
+        dict_data[post_id]['rationales']=rational_list
+        dict_data[post_id]['post_tokens']=tokens_all
+        dict_data[post_id]['annotators']=temp_users
+    
+    return dict_data        
+
+
+
 def collect_data(params):
     if(params['bert_tokens']):
         print('Loading BERT tokenizer...')

@@ -1,6 +1,7 @@
 *.pkl
 *.pickle
 *.ipynb
+deletethis.json
 HateXplain_Dataset.csv
 eraserbenchmark-master/
 eraser/

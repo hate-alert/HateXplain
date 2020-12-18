@@ -5,9 +5,6 @@ from torch.utils.data import TensorDataset, DataLoader, RandomSampler, Sequentia
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
 
-# Set the maximum sequence length.
-# I've chosen 64 somewhat arbitrarily. It's slightly larger than the
-# maximum training sentence length of 47...
 
 
 def custom_att_masks(input_ids):
@@ -32,6 +29,7 @@ def combine_features(tuple_data,params,is_train=False):
     
    
     encoder = LabelEncoder()
+    
     encoder.classes_ = np.load(params['class_names'],allow_pickle=True)
     labels=encoder.transform(labels)
     
