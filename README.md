@@ -1,5 +1,5 @@
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fpunyajoy%2FHateXplain&count_bg=%2379C83D&title_bg=%23555555&icon=expertsexchange.svg&icon_color=%23E7E7E7&title=Visits&edge_flat=false)](https://hits.seeyoufarm.com)
-# HateXplain: A Benchmark Dataset for Explainable Hate Speech Detection
+# :mag_right: HateXplain: A Benchmark Dataset for Explainable Hate Speech Detection
 
 ## Abstract
 
@@ -34,6 +34,10 @@ Hate speech is a challenging issue plaguing the online social media. While bette
 :bookmark: [**Dataset**](Data/README.md) :- This describes the dataset format and setup for the dataset pipeline.
 
 :bookmark: [**Parameters**](Parameters_description.md) :- This describes all the different parameter that are used in this code
+
+------------------------------------------
+***Usage instructions*** 
+------------------------------------------
 
 
 
