@@ -27,14 +27,13 @@ Hate speech is a challenging issue plaguing the online social media. While bette
 ./best_model_json     --> Contains the parameter values for the best models
 
 ~~~
+------------------------------------------
+***Table of contents*** :bookmark_tabs:
+------------------------------------------
 
-**Dataset Details**
-
-Location: Data/dataset.json
+:bookmark: [**Dataset**](Data/README.md) :- This describes the dataset format and setup for setting up the dataset pipeline.
 
 
 
-
-~~~
 
 #####  :thumbsup: The repo is still in active developements. Feel free to create an [issue](https://github.com/punyajoy/HateXplain/issues) !!  :thumbsup:
