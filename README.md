@@ -32,6 +32,7 @@ Hate speech is a challenging issue plaguing the online social media. While bette
 ------------------------------------------
 
 :bookmark: [**Dataset**](Data/README.md) :- This describes the dataset format and setup for the dataset pipeline.
+
 :bookmark: [**Parameters**](Parameters_description.md) :- This describes all the different parameter that are used in this code
 
 
