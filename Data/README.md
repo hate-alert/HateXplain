@@ -4,7 +4,7 @@
 2. classes.npy-  contains three classes -- "hatespeech" , "normal", "offensive"
 
 Code to load the encoder
-~~~
+~~~python
 from sklearn.preprocessing import LabelEncoder
 encoder = LabelEncoder()
 encoder.classes_ = np.load(<name_of_the_file>,allow_pickle=True)
