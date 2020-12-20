@@ -1,7 +1,6 @@
 import torch
 import transformers 
 from transformers import *
-from api_config import project_name,api_token
 import glob 
 from transformers import BertTokenizer
 from transformers import BertForSequenceClassification, AdamW, BertConfig
