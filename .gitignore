@@ -1,6 +1,8 @@
 *.pkl
 *.pickle
-*.ipynb
+Data_collect.ipynb
+Highlight_explanation.ipynb
+Testing_new.ipynb
 deletethis.json
 HateXplain_Dataset.csv
 eraserbenchmark-master/

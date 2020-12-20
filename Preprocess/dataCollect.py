@@ -10,13 +10,11 @@ from .spanMatcher import returnMask,returnMaskonetime
 from transformers import BertTokenizer
 from .utils import CheckForGreater,most_frequent
 from .preProcess import *   
-
 from transformers import BertTokenizer
 from os import path
 import pickle
 import numpy as np
 import re
-debug=False
 
 def set_name(params):
     file_name='Data/Total_data'
@@ -32,21 +30,6 @@ def set_name(params):
     return file_name
 
 
-def similar(a, b):
-    return SequenceMatcher(None, a, b).ratio()
-
-# def get_annotated_data():
-#     all_files=glob("../../main/answer/*.csv")
-#     print(all_files)
-#     if(all_files==[]):
-#         print('Error: File path might be wrong, no files found')
-#         return -1
-#     list_df=[]
-#     for file in all_files:
-#         list_df.append(pd.read_csv(file))
-    
-#     data_all_labelled=pd.concat(list_df,axis=0,sort=True)  
-#     return data_all_labelled
 
 def get_annotated_data(params):
     #temp_read = pd.read_pickle(params['data_file'])
@@ -95,28 +78,6 @@ def get_annotated_data(params):
 
 
 
-def debug_print(row,string_parts,list_pos,span_list):
-    if(row['old_vs_new']== 'old'):
-
-        text = re.sub('@\w+', '@user',row['text'])
-        #### remove any html spans if present in the text    	
-        text = cleanhtml(text)
-        ###remove some errorneous characters in the text
-        text = re.sub(u"(\u2018|\u2019|\u201A|\u201B|\u201C|\u201D|\u201E)", "'", text)
-        text = text.replace("\r\n",' ').replace("\n",' ')
-    else:
-        line = ' '.join(preProcessing(str(row['text']).strip()))
-        text = line.replace("\"", "\"\"")
-        
-    print("Preprocessed text:-",text)
-    print(row['workerid1'],row['explain1'])
-    print(row['workerid2'],row['explain2'])
-    print(row['workerid3'],row['explain3'])
-    for i in range(0,3):
-            print(string_parts[i])
-            print(list_pos[i])
-            print(span_list[i])
-    print("=======")
 
 def get_training_data(data,params,tokenizer):
     '''input: data is a dataframe text ids attentions labels column only'''
@@ -139,34 +100,12 @@ def get_training_data(data,params,tokenizer):
         annotation=row['final_label']
         
         if(annotation != 'undecided'):
-            selection_list=row['rationales']
             tokens_all,attention_masks=returnMask(row,params,tokenizer)
             attention_vector= aggregate_attention(attention_masks,row, params)     
-            #print(len(attention_vector))
-#             if(row['post_id'] in ['10510109_gab','1081573659137830912_twitter','1119979940080783360_twitter']):
-#                 print("debug_string")
-#                 debug_print(row,string_parts,list_pos,span_list)
-            
-            
-            if(params['type_attention']!='individual' and (attention_vector==[] or np.isnan(attention_vector).any() or CheckForGreater(attention_vector, -100)==False)):
-                if(debug==True):
-                    print("tokens----",tokens_all)
-                    print("attention_masks:----",attention_masks)
-                    print("attention_vector:----",attention_vector)
-                    
-                    #return_mask(text,selection_list,debug=True)
-                    print("=======================================")
-                    
-                else:
-                    pass
-                print(row['post_id'])
-                debug_print(row,string_parts,list_pos,span_list)
-                count+=1
-            else:
-                attention_list.append(attention_vector)
-                text_list.append(tokens_all)
-                label_list.append(annotation)
-                post_ids_list.append(post_id)
+            attention_list.append(attention_vector)
+            text_list.append(tokens_all)
+            label_list.append(annotation)
+            post_ids_list.append(post_id)
         else:
             count_confused+=1
             
@@ -198,12 +137,9 @@ def get_test_data(data,params,message='text'):
     text_list=[]
     attention_list=[]
     label_list=[]
-    count=0
-    count_confused=0
     print('total_data',len(data))
     for index,row in tqdm(data.iterrows(),total=len(data)):
         post_id=row['post_id']
-#         annotation_list=[row['label1'],row['label2'],row['label3']] 
         annotation=row['final_label']
         tokens_all,attention_masks=returnMask(row,params,tokenizer)
         attention_vector= aggregate_attention(attention_masks,row, params) 
@@ -213,8 +149,6 @@ def get_test_data(data,params,message='text'):
         post_ids_list.append(post_id)
     
     
-    print("attention_error:",count)
-    print("no_majority:",count_confused)
     # Calling DataFrame constructor after zipping 
     # both lists, with columns specified 
     training_data = pd.DataFrame(list(zip(post_ids_list,text_list,attention_list,label_list)), 
@@ -287,6 +221,15 @@ def transform_dummy_data(sentences):
     return df
 
 
+def collect_data(params):
+    if(params['bert_tokens']):
+        print('Loading BERT tokenizer...')
+        tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', do_lower_case=False)
+    else:
+        tokenizer=None
+    data_all_labelled=get_annotated_data(params)
+    train_data=get_training_data(data_all_labelled,params,tokenizer)
+    return train_data
 
 
 
@@ -359,19 +302,9 @@ def get_training_data_one_time(data,params,tokenizer):
 
 
 
-def collect_data(params):
-    if(params['bert_tokens']):
-        print('Loading BERT tokenizer...')
-        tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', do_lower_case=False)
-    else:
-        tokenizer=None
-    data_all_labelled=get_annotated_data(params)
-    train_data=get_training_data(data_all_labelled,params,tokenizer)
-    return train_data
 
 
 #### OLDcode remove at last
-
 def return_inverse_dict():
     with open("../../main/id_orig_seid_Mapping.json") as f:
         id_dict_orig = json.load(f) 
@@ -467,7 +400,8 @@ def get_text_information(df,key,text_id_map):
     
     return dict_text
     
-
+def similar(a, b):
+    return SequenceMatcher(None, a, b).ratio()
     
 def get_dict_comments(orig_dict_id,data_all_labelled,params):
     dict_comment_file = 'dict_comments.dat'

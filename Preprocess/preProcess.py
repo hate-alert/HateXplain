@@ -45,7 +45,6 @@ text_processor = TextPreProcessor(
     dicts=[emoticons]
 )
 #### Bert tokenizer
-
 def custom_tokenize(sent,tokenizer,max_length=512):
     # `encode` will:
     #   (1) Tokenize the sentence.
@@ -101,11 +100,12 @@ def ek_extra_preprocess(text,params,tokenizer):
 #input: text
 #process: remove html tags  
 #output: text with no html tags
-
 def cleanhtml(raw_html):
     cleanr = re.compile('<.*?>')
     cleantext = re.sub(cleanr, '', raw_html)
     return cleantext
+
+
 
 
 

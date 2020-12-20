@@ -85,8 +85,9 @@ def return_params(path_name,att_lambda,num_classes=3):
         if(params['train_att']):
             if(params['att_lambda']>=1):
                 params['att_lambda']=int(params['att_lambda'])
-                output_dir=output_dir+str(params['supervised_layer_pos'])+'_'+str(params['num_supervised_heads'])+'_'+str(params['num_classes'])+'_'+str(params['att_lambda'])
-            
+            output_dir=output_dir+str(params['supervised_layer_pos'])+'_'+str(params['num_supervised_heads'])
+            output_dir=output_dir+'_'+str(params['num_classes'])+'_'+str(params['att_lambda'])
+
         else:
             output_dir=output_dir+'_'+str(params['num_classes'])
         params['path_files']=output_dir

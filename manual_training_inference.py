@@ -1,4 +1,3 @@
-##### This is used if you want to run the model once and set your paramters manually
 ### This is run when you want to select the parameters from the parameters file
 import transformers 
 import torch
@@ -384,26 +383,6 @@ def train_model(params,device):
             best_val_recall = val_recall
             best_test_recall = test_recall
             
-            ##### temp remove later
-            temp_filename=set_name(params)
-            temp_dataset= pd.read_pickle(temp_filename)
-            with open('Data/post_id_divisions.json', 'r') as fp:
-                temp_post_id_dict=json.load(fp)
-
-            temp_X_test=temp_dataset[temp_dataset['Post_id'].isin(temp_post_id_dict['test'])]
-
-            
-            
-            data = {'post_ids':  temp_X_test['Post_id'],
-                    'probab': logits_all_final}
-
-            df = pd.DataFrame (data, columns = list(data.keys()))
-            df.to_csv('predictions.csv')
-
-            
-            
-            
-            
             if(params['bert_tokens']):
                 print('Loading BERT tokenizer...')
                 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', do_lower_case=False)
@@ -446,9 +425,9 @@ def train_model(params,device):
 
 
 params_data={
-    'include_special':False,  #True is want to include <url> in place of urls if False will be removed 
-    'bert_tokens':False, #True /False
-    'type_attention':'softmax', #softmax
+    'include_special':False, 
+    'bert_tokens':False,
+    'type_attention':'softmax',
     'set_decay':0.1,
     'majority':2,
     'max_length':128,
@@ -535,23 +514,23 @@ if __name__=='__main__':
 
     # Add the arguments
     my_parser.add_argument('path',
-                           metavar='--path',
+                           metavar='--path_to_json',
                            type=str,
-                           help='the path to best params')
+                           help='The path to json containining the parameters')
     
-    my_parser.add_argument('use_best',
-                           metavar='--best',
+    my_parser.add_argument('use_from_file',
+                           metavar='--use_from_file',
                            type=str,
-                           help='whether use best params or not')
+                           help='whether use the parameters present here or directly use from file')
     
-    my_parser.add_argument('extra',
-                           metavar='--best_2s',
+    my_parser.add_argument('attention_lambda',
+                           metavar='--attention_lambda',
                            type=str,
-                           help='kdkdkdkd')
+                           help='required to assign the contribution of the atention loss')
     
     args = my_parser.parse_args()
     params['best_params']=False
-    if(args.use_best == 'True'):
+    if(args.use_from_file == 'True'):
         with open(args.path,mode='r') as f:
             params = json.load(f)
         for key in params:
@@ -565,12 +544,8 @@ if __name__=='__main__':
                 
             if((key == 'weights') and (params['auto_weights']==False)):
                 params[key] = ast.literal_eval(params[key])
-            
-
-
-             
-
         params['best_params']=True 
+    ##### change in logging to output the results to neptune
     params['logging']='local'
     if(params['logging']=='neptune'):
         neptune.init(project_name,api_token=api_token)
@@ -579,27 +554,31 @@ if __name__=='__main__':
     if torch.cuda.is_available() and params['device']=='cuda':    
         # Tell PyTorch to use the GPU.    
         device = torch.device("cuda")
+        ##### You can set the device manually if you have only one gpu
+        ##### comment this line if you don't want to manually set the gpu
         deviceID = get_gpu()
         torch.cuda.set_device(deviceID[0])
+        ##### comment this line if you don't want to manually set the gpu
+        #### parameter required is the gpu id
+        #torch.cuda.set_device(0)
+        
     else:
         print('Since you dont want to use GPU, using the CPU instead.')
         device = torch.device("cpu")
         
-    print(args)
+        
+    #### Few handy keys that you can directly change.
     params['variance']=1
-   
-    params['epochs'] =5
+    params['epochs']=5
     params['to_save']=True
     params['num_classes']=3
     params['data_file']=dict_data_folder[str(params['num_classes'])]['data_file']
     params['class_names']=dict_data_folder[str(params['num_classes'])]['class_label']
-    
-    print(params)
     if(params['num_classes']==2 and (params['auto_weights']==False)):
           params['weights']=[1.0,1.0]
             
     #for att_lambda in [0.001,0.01,0.1,1,10,100]
-    params['att_lambda']=float(args.extra)
+    params['att_lambda']=float(args.attention_lambda)
     train_model(params,device)
 
 

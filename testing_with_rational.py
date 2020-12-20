@@ -328,6 +328,9 @@ if __name__=='__main__':
     
     
     params=return_params(model_dict_params[model_to_use],float(args.attention_lambda))
+    
+    
+    
     params['variance']=1
     params['num_classes']=3
     params['device']='cpu'
