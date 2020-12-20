@@ -2,8 +2,8 @@
 This document notes down all the hyper-parameters associated with data, models and evaluation. Before adding any new options to some of the categories, please ensure that is implemented in the respective python file.
 Parameters other than the ones described below are to be kept fixed.
 ##### Attention aggregation parameters
-* **type_attention** :- How the normalisation of the attention vector will happen. Three options are available currently "softmax","neg_softmax" and "sigmoid". More details [here](https://github.com/punyajoy/HateXplain/blob/master/Preprocess/attentionCal.py) 
-* **variance**:- constant multiplied with the attention vector to increase the difference between the attention to attended and non-attended tokens.
+* **type_attention** :- How the normalisation of the attention vector will happen. Three options are available currently "softmax","neg_softmax" and "sigmoid". More details [here](https://github.com/punyajoy/HateXplain/blob/master/Preprocess/attentionCal.py).
+* **variance**:- constant multiplied with the attention vector to increase the difference between the attention to attended and non-attended tokens.More details [here](https://github.com/punyajoy/HateXplain/blob/master/Preprocess/attentionCal.py). 
 
 ~~~
 variance=5
@@ -12,12 +12,8 @@ attention_modified = attention * variance
 attention_modified = [0,0,0,5,0]
 ~~~
 
-
-
-
 ##### Preprocessing parameters
-
-"include_special": "False",
+* **include_special** :- This can be set as *True* or *False*. This is with respect to ekaphrasis processing
 "max_length": 128.0,
 "padding_idx": 0.0,
 
