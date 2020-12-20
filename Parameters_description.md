@@ -3,7 +3,17 @@ This document notes down all the hyper-parameters associated with data, models a
 Parameters other than the ones described below are to be kept fixed.
 ##### Attention aggregation parameters
 * **type_attention** :- How the normalisation of the attention vector will happen. Three options are available currently "softmax","neg_softmax" and "sigmoid". More details [here](https://github.com/punyajoy/HateXplain/blob/master/Preprocess/attentionCal.py) 
-"variance": 5.0,
+* **variance**:- constant multiplied with the attention vector to increase the difference between the attention to attended and non-attended tokens.
+
+~~~
+variance=5
+attention = [0,0,0,1,0]
+attention_modified = attention * variance
+attention_modified = [0,0,0,5,0]
+~~~
+
+
+
 
 ##### Preprocessing parameters
 
@@ -46,9 +56,3 @@ Parameters other than the ones described below are to be kept fixed.
 "weights": "[1.0795518  0.82139814 1.1678787 ]",
 "train_att": "True",
 "train_embed": "True",
-
-"normalized": "False",
-
-
-
-
