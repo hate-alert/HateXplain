@@ -391,9 +391,8 @@ if __name__=='__main__':
     params['num_classes']=3
     params['num_samples']=args.num_samples
     params['variance']=1
-    params['device']='cuda'
+    params['device']='cpu'
     fix_the_random(seed_val = params['random_seed'])
-    
     test_data=get_test_data(temp_read,params,message='text')
     final_dict=get_final_dict_with_lime(params,model_to_use,test_data,topk=5)
     path_name=model_dict_params[model_to_use]

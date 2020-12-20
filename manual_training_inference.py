@@ -525,6 +525,8 @@ if __name__=='__main__':
                            type=str,
                            help='required to assign the contribution of the atention loss')
     
+    
+    
     args = my_parser.parse_args()
     params['best_params']=False
     if(args.use_from_file == 'True'):
