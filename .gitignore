@@ -24,7 +24,6 @@ loop.sh
 api_config.py
 *.model
 *.csv
-*.txt
 *.pickle
 Demo_target.zip
 Demo_vs_target/
