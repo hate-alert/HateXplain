@@ -4,7 +4,6 @@ import torch
 import neptune
 from knockknock import slack_sender
 from transformers import *
-from api_config import project_name,api_token
 import glob 
 from transformers import BertTokenizer
 from transformers import BertForSequenceClassification, AdamW, BertConfig
@@ -18,9 +17,7 @@ from TensorDataset.datsetSplitter import createDatasetSplit
 from TensorDataset.dataLoader import combine_features
 from Preprocess.dataCollect import collect_data,set_name
 from sklearn.metrics import accuracy_score,f1_score,roc_auc_score,recall_score,precision_score
-#from pandas_ml import ConfusionMatrix
 import matplotlib.pyplot as plt
-#from BERT_inference import *
 import time
 import os
 from transformers import BertTokenizer
@@ -548,6 +545,7 @@ if __name__=='__main__':
     ##### change in logging to output the results to neptune
     params['logging']='local'
     if(params['logging']=='neptune'):
+        from api_config import project_name,api_token
         neptune.init(project_name,api_token=api_token)
         neptune.set_project(project_name)
     torch.autograd.set_detect_anomaly(True)
