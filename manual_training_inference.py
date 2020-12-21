@@ -507,7 +507,7 @@ dict_data_folder={
 }
 
 if __name__=='__main__': 
-    my_parser = argparse.ArgumentParser(description='List the content of a folder')
+    my_parser = argparse.ArgumentParser(description='Train a deep-learning model with the given data')
 
     # Add the arguments
     my_parser.add_argument('path',
