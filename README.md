@@ -67,12 +67,13 @@ You can either set the parameters present in the python file, option will be (--
 
 ##### For transformer models :-
 The repository current supports the model having similar tokenization as [BERT](https://huggingface.co/transformers/model_doc/bert.html). In the params set `bert_tokens` to True and `path_files` to any of BERT based models in [Huggingface](https://huggingface.co/). 
-##### For non-transformer models
+##### For non-transformer models :-
 The repository current supports the LSTM, LSTM attention and CNN GRU models. In the params set `bert_tokens` to False and model name according to **Parameters** section (either birnn, birnnatt, birnnscrat, cnn_gru).
 
 Other models will be added to the repository soon :clock11:. For more details about the end to end pipleline visit [our_demo](https://github.com/punyajoy/HateXplain/blob/master/Example_HateExplain.ipynb)
 
-
-
+### Blogs and github repos which we used for reference :angel:
+1. For finetuning BERT this [blog](https://mccormickml.com/2019/07/22/BERT-fine-tuning/)  by Chris McCormick is used and we also referred [Transformers github repo](https://github.com/huggingface/transformers)
+2. For CNN-GRU model we used the original [repo](https://github.com/ziqizhang/chase) for reference 
 
 #####  :thumbsup: The repo is still in active developements. Feel free to create an [issue](https://github.com/punyajoy/HateXplain/issues) !!  :thumbsup:
