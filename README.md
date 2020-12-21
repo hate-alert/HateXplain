@@ -76,4 +76,12 @@ Other models will be added to the repository soon :clock11:. For more details ab
 1. For finetuning BERT this [blog](https://mccormickml.com/2019/07/22/BERT-fine-tuning/)  by Chris McCormick is used and we also referred [Transformers github repo](https://github.com/huggingface/transformers)
 2. For CNN-GRU model we used the original [repo](https://github.com/ziqizhang/chase) for reference 
 
+
+### Todos
+- [x] Add arxiv paper link and description
+- [ ] Release better documentation for Models and Preprocess sections
+- [ ] Upload our model to [transformers community](https://huggingface.co/models) to make them public
+- [ ] Create an interface for **social scientists** where they can use our models easily with their data
+
+
 #####  :thumbsup: The repo is still in active developements. Feel free to create an [issue](https://github.com/punyajoy/HateXplain/issues) !!  :thumbsup:
