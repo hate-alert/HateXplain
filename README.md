@@ -43,6 +43,35 @@ Hate speech is a challenging issue plaguing the online social media. While bette
 ------------------------------------------
 ***Usage instructions*** 
 ------------------------------------------
+please setup the **Dataset** first (more important if your using non-bert model). Install the libraries using the following command (preferably inside an environemt)
+~~~
+pip install -r requirements.txt
+~~~
+#### Training
+To train the model use the following command.
+~~~
+usage: manual_training_inference.py [-h]
+                                    --path_to_json --use_from_file
+                                    --attention_lambda
+
+Train a deep-learning model with the given data
+
+positional arguments:
+  --path_to_json      The path to json containining the parameters
+  --use_from_file     whether use the parameters present here or directly use
+                      from file
+  --attention_lambda  required to assign the contribution of the atention loss
+
+~~~
+You can either set the parameters present in the python file, option will be (--use_from_file set to True). To change the parameters, check the **Parameters** section for more details. The code will run on CPU by default. The recommended way will be to copy one of the dictionary in `best_model_json` and change it accordingly.
+
+##### For transformer models :-
+The repository current supports the model having similar tokenization as [BERT](https://huggingface.co/transformers/model_doc/bert.html). In the params set `bert_tokens` to True and `path_files` to any of BERT based models in [Huggingface](https://huggingface.co/). 
+##### For non-transformer models
+The repository current supports the LSTM, LSTM attention and CNN GRU models. In the params set `bert_tokens` to False and model name according to **Parameters** section (either birnn, birnnatt, birnnscrat, cnn_gru).
+
+Other models will be added to the repository soon :clock11:. For more details about the end to end pipleline visit [our_demo](https://github.com/punyajoy/HateXplain/blob/master/Example_HateExplain.ipynb)
+
 
 
 
