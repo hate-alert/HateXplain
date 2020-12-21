@@ -158,7 +158,7 @@ class modelPred():
         input_mask_all=[]
 
         # Evaluate data for one epoch
-        for step, batch in test_dataloader:
+        for step,batch in enumerate(test_dataloader):
 
             # Progress update every 40 batches.
             if step % 40 == 0 and not step == 0:

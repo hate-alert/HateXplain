@@ -38,8 +38,7 @@ class Vocab_own():
         count=1
         for index,row in tqdm(self.dataframe.iterrows(),total=len(self.dataframe)):
             for word in row['Text']:
-                vector,word=self.load_embeddings(word)  
-                    
+                vector,word=self.load_embeddings(word)      
                 try:
                     self.vocab[word]+=1
                 except KeyError:
@@ -55,6 +54,7 @@ class Vocab_own():
         self.itos[0]='<pad>'
         self.embeddings.append(np.zeros((300,), dtype=float))
         self.embeddings=np.array(self.embeddings)
+        print(self.embeddings.shape)
 
     
     
