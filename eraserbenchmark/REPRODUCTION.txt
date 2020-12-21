@@ -1,0 +1,32 @@
+# commands to reproduce results
+# Note that we control the GPU device directly via CUDA_VISIBLE_DEVICES
+# Note that we add the current directory to the PYTHONPATH directly.
+# Evidence Inference
+CUDA_VISIBLE_DEVICES=0 PYTHONPATH=./:$PYTHONPATH python rationale_benchmark/models/pipeline/bert_pipeline.py --data_dir data/evidence_inference/ --output_dir bert_models/evidence_inference --model_params params/evidence_inference_bert.json
+PYTHONPATH=./:$PYTHONPATH python rationale_benchmark/metrics.py --data_dir data/evidence_inference/ --split test --strict --results bert_models/evidence_inference/test_decoded.jsonl --iou_thresholds 0.5 --score_file bert_models/evidence_inference_test_scores.json
+
+# FEVER, takes a very long time to run
+CUDA_VISIBLE_DEVICES=0 PYTHONPATH=./:$PYTHONPATH python rationale_benchmark/models/pipeline/bert_pipeline.py --data_dir data/fever/ --output_dir bert_models/fever --model_params params/fever_bert.json
+PYTHONPATH=./:$PYTHONPATH python rationale_benchmark/metrics.py --data_dir data/fever/ --split test --strict --results bert_models/fever/test_decoded.jsonl --iou_thresholds 0.5 --score_file bert_models/fever_test_scores.json
+
+# BoolQ, takes a very long time to run
+CUDA_VISIBLE_DEVICES=0 PYTHONPATH=./:$PYTHONPATH python rationale_benchmark/models/pipeline/bert_pipeline.py --data_dir data/boolq/ --output_dir bert_models/boolq --model_params params/boolq_bert.json
+PYTHONPATH=./:$PYTHONPATH python rationale_benchmark/metrics.py --data_dir data/boolq/ --split test --strict --results bert_models/boolq/test_decoded.jsonl --iou_thresholds 0.5 --score_file bert_models/boolq_test_scores.json
+
+# MultiRC
+CUDA_VISIBLE_DEVICES=0 PYTHONPATH=./:$PYTHONPATH python rationale_benchmark/models/pipeline/bert_pipeline.py --data_dir data/multirc/ --output_dir bert_models/multirc --model_params params/multirc_bert.json 
+PYTHONPATH=./:$PYTHONPATH python rationale_benchmark/metrics.py --data_dir data/multirc/ --split test --strict --results bert_models/multirc/test_decoded.jsonl --iou_thresholds 0.5 --score_file bert_models/multirc_test_scores.json
+
+# Movies
+CUDA_VISIBLE_DEVICES=0 PYTHONPATH=./:$PYTHONPATH python rationale_benchmark/models/pipeline/bert_pipeline.py --data_dir data/movies/ --output_dir bert_models/movies --model_params params/movies_bert.json
+PYTHONPATH=./:$PYTHONPATH python rationale_benchmark/metrics.py --data_dir data/movies/ --split test --strict --results bert_models/movies/test_decoded.jsonl --iou_thresholds 0.5 --score_file bert_models/movies_test_scores.json 
+
+# CoS-E
+CUDA_VISIBLE_DEVICES=0 PYTHONPATH=./:$PYTHONPATH python rationale_benchmark/models/pipeline/bert_pipeline.py --data_dir data/cose_simplified/ --output_dir bert_models/cose --model_params params/cose_bert.json
+# Note that the training files and the evaluation files are different here. This is because we have done terrible things in order to get COS-E to run in this situation, as it is different from all of the other datasets.
+PYTHONPATH=./:$PYTHONPATH python rationale_benchmark/metrics.py --data_dir data/cose/ --split test --strict --results bert_models/cose/test_decoded.jsonl --iou_thresholds 0.5 --score_file bert_models/cose_test_scores.json
+
+# e-SNLI
+# This is only an example; scoring should be done against esnli
+CUDA_VISIBLE_DEVICES=0 PYTHONPATH=./:$PYTHONPATH python rationale_benchmark/models/pipeline/bert_pipeline.py --data_dir data/esnli_flat/ --output_dir bert_models/esnli_flat --model_params params/esnli_bert.json
+PYTHONPATH=./:$PYTHONPATH python rationale_benchmark/metrics.py --data_dir data/esnli_flat --split test --strict --results bert_models/esnli_flat/test_decoded.jsonl --iou_thresholds 0.5 --score_file bert_models/esnli_test_scores.json
