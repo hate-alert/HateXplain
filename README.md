@@ -1,4 +1,5 @@
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fpunyajoy%2FHateXplain&count_bg=%2379C83D&title_bg=%23555555&icon=expertsexchange.svg&icon_color=%23E7E7E7&title=Visits&edge_flat=false)](https://hits.seeyoufarm.com)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/hatexplain-a-benchmark-dataset-for/hate-speech-detection-on-hatexplain)](https://paperswithcode.com/sota/hate-speech-detection-on-hatexplain?p=hatexplain-a-benchmark-dataset-for)
 # :mag_right: HateXplain: A Benchmark Dataset for Explainable Hate Speech Detection [Accepted at AAAI 2021]
 
 ## Abstract
