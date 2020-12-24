@@ -23,7 +23,7 @@ Hate speech is a challenging issue plaguing the online social media. While bette
 ~~~
 
 ------------------------------------------
-***Folder Description*** :point_left:
+***Folder Description*** :open_file_folder:	
 ------------------------------------------
 ~~~
 
