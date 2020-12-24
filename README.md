@@ -1,5 +1,7 @@
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fpunyajoy%2FHateXplain&count_bg=%2379C83D&title_bg=%23555555&icon=expertsexchange.svg&icon_color=%23E7E7E7&title=Visits&edge_flat=false)](https://hits.seeyoufarm.com)
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/hatexplain-a-benchmark-dataset-for/hate-speech-detection-on-hatexplain)](https://paperswithcode.com/sota/hate-speech-detection-on-hatexplain?p=hatexplain-a-benchmark-dataset-for)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![PyPI license](https://img.shields.io/pypi/l/ansicolortags.svg)](https://pypi.python.org/pypi/ansicolortags/)
 # :mag_right: HateXplain: A Benchmark Dataset for Explainable Hate Speech Detection [Accepted at AAAI 2021]
 
 ## Abstract
@@ -66,12 +68,10 @@ positional arguments:
 ~~~
 You can either set the parameters present in the python file, option will be (--use_from_file set to True). To change the parameters, check the **Parameters** section for more details. The code will run on CPU by default. The recommended way will be to copy one of the dictionary in `best_model_json` and change it accordingly.
 
-##### For transformer models :-
-The repository current supports the model having similar tokenization as [BERT](https://huggingface.co/transformers/model_doc/bert.html). In the params set `bert_tokens` to True and `path_files` to any of BERT based models in [Huggingface](https://huggingface.co/). 
-##### For non-transformer models :-
-The repository current supports the LSTM, LSTM attention and CNN GRU models. In the params set `bert_tokens` to False and model name according to **Parameters** section (either birnn, birnnatt, birnnscrat, cnn_gru).
+* **For transformer models** :-The repository current supports the model having similar tokenization as [BERT](https://huggingface.co/transformers/model_doc/bert.html). In the params set `bert_tokens` to True and `path_files` to any of BERT based models in [Huggingface](https://huggingface.co/). 
+* **For non-transformer models** :-The repository current supports the LSTM, LSTM attention and CNN GRU models. In the params set `bert_tokens` to False and model name according to **Parameters** section (either birnn, birnnatt, birnnscrat, cnn_gru).
 
-Other models will be added to the repository soon :clock11:. For more details about the end to end pipleline visit [our_demo](https://github.com/punyajoy/HateXplain/blob/master/Example_HateExplain.ipynb)
+For more details about the end to end pipleline visit [our_demo](https://github.com/punyajoy/HateXplain/blob/master/Example_HateExplain.ipynb)
 
 ### Blogs and github repos which we used for reference :angel:
 1. For finetuning BERT this [blog](https://mccormickml.com/2019/07/22/BERT-fine-tuning/)  by Chris McCormick is used and we also referred [Transformers github repo](https://github.com/huggingface/transformers).
@@ -80,8 +80,9 @@ Other models will be added to the repository soon :clock11:. For more details ab
 
 
 ### Todos
-- [x] Add arxiv paper link and description
-- [ ] Release better documentation for Models and Preprocess sections
+- [x] Add arxiv paper link and description.
+- [ ] Release better documentation for Models and Preprocess sections.
+- [ ] Add other Transformers model to the pipeline.
 - [ ] Upload our model to [transformers community](https://huggingface.co/models) to make them public
 - [ ] Create an interface for **social scientists** where they can use our models easily with their data
 
