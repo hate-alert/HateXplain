@@ -30,23 +30,22 @@ attention_modified = [0,0,0,5,0]
 * **embed_size**: Embedding size that needs to be used. For our purpose we set it to 300. More info in the Preprocess section
 * **hidden_size**: Hidden size for the recurrent neural network,
 * **seq_model**: Which recurrence model to use "lstm" or "gru",
+* **train_embed**: This can be set as *True* or *False*. This will be set as True if you want to train the embeddings layer also.
 
 ##### BERT model parameters
-"dropout_bert": "N/A",
-"num_supervised_heads": "N/A",
-"what_bert": "N/A",
-"save_only_bert": "N/A",
-"supervised_layer_pos": "N/A",
+* **dropout_bert**: Dropout after the linear layer in BERT,
+* **num_supervised_heads**: Number of attention heads whose final attention needs to be aligned with the ground truth attention,
+* **save_only_bert**: This can be set as *True* or *False*. "True" will save the BERT part of the model only not the linear layer.
+* **supervised_layer_pos**: The layer whose attention heads needs to be aligned in the final layer,
 
 ##### Common parameters for training 
-"att_lambda": 100.0,
-"auto_weights": "True",
-"batch_size": 32.0,
-"device": "cuda",
-"embeddings": "None",
-"epochs": 20.0,
-"epsilon": 1e-08,
-"learning_rate": 0.001,
-"weights": "[1.0795518  0.82139814 1.1678787 ]",
-"train_att": "True",
-"train_embed": "True",
+* **att_lambda**: Contribution of the attention loss to the total loss.
+* **auto_weights**: This can be set as *True* or *False*. True will assign the class weight based on the class distribution in the training dataset.
+* **batch_size**: Batch size to train the model. We set it to 32 for every model.
+* **device**: Device on which the system will run. set "cuda(gpu)" or "cpu".
+* **epochs**: Number of epochs to train the model.
+* **epsilon**: Used as a parameter in Adam optimizer. Default set at 1e-08,
+* **learning_rate**: Learning rate passed to the Adam optimizer. For BERT it is set to closer to 2e-5, for non-transformer model it is in the range of 0.001 to 0.1 in our case. 
+* **weights**: If you want to manually set the weights for the different classes. Be sure to maintain a vector of length similar to the original number of classes. 
+* **train_att**: This can be set as *True* or *False*. This will be set as True if you want to train the attention weights of the model.
+
