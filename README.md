@@ -16,12 +16,12 @@ Hate speech is a challenging issue plaguing the online social media. While bette
 
 ~~~bibtex
 @article{mathew2020hatexplain,
-      title={HateXplain: A Benchmark Dataset for Explainable Hate Speech Detection}, 
-      author={Binny Mathew and Punyajoy Saha and Seid Muhie Yimam and Chris Biemann and Pawan Goyal and Animesh Mukherjee},
-      year={2020},
-      eprint={2012.10289},
-      archivePrefix={arXiv},
+  title={HateXplain: A Benchmark Dataset for Explainable Hate Speech Detection},
+  author={Mathew, Binny and Saha, Punyajoy and Yimam, Seid Muhie and Biemann, Chris and Goyal, Pawan and Mukherjee, Animesh},
+  journal={arXiv preprint arXiv:2012.10289},
+  year={2020}
 }
+
 ~~~
 
 ------------------------------------------
