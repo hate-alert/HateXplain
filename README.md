@@ -5,6 +5,7 @@
 # :mag_right: HateXplain: A Benchmark Dataset for Explainable Hate Speech Detection [Accepted at AAAI 2021]
 
 ### :tada: :tada: BERT for detecting hate speech trained with rationales from our dataset is available [here](https://huggingface.co/Hate-speech-CNERG/bert-base-uncased-hatexplain). Be sure to check it out :tada: :tada:.
+### :tada: :tada: Now you can now load our dataset from Huggingface datasets [link here](https://huggingface.co/datasets/hatexplain). Be sure to check it out :tada: :tada:.
 
 
 ## Abstract
