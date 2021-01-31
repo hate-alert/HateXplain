@@ -43,7 +43,6 @@ Hate speech is a challenging issue plaguing the online social media. While bette
 ------------------------------------------
 
 :bookmark: [**Dataset**](Data/README.md) :- This describes the dataset format and setup for the dataset pipeline.
-
 :bookmark: [**Parameters**](Parameters_description.md) :- This describes all the different parameter that are used in this code
 
 ------------------------------------------
@@ -86,8 +85,8 @@ For more details about the end to end pipleline visit [our_demo](https://github.
 - [x] Add arxiv paper link and description.
 - [ ] Release better documentation for Models and Preprocess sections.
 - [ ] Add other Transformers model to the pipeline.
-- [ ] Upload our model to [transformers community](https://huggingface.co/models) to make them public
-- [ ] Create an interface for **social scientists** where they can use our models easily with their data
+- [x] Upload our model to [transformers community](https://huggingface.co/models) to make them public
+- [x] Create an interface for **social scientists** where they can use our models easily with their data
 
 
 #####  :thumbsup: The repo is still in active developements. Feel free to create an [issue](https://github.com/punyajoy/HateXplain/issues) !!  :thumbsup:
