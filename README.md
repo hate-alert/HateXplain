@@ -4,7 +4,7 @@
 [![PyPI license](https://img.shields.io/pypi/l/ansicolortags.svg)](https://pypi.python.org/pypi/ansicolortags/)
 # :mag_right: HateXplain: A Benchmark Dataset for Explainable Hate Speech Detection [Accepted at AAAI 2021]
 
-### :tada: :tada: BERT for detecting abusive language(Hate speech+offensive) and predicting rationales [here](https://huggingface.co/Hate-speech-CNERG/bert-base-uncased-hatexplain-rationale-two). Be sure to check it out :tada: :tada:.
+### :tada: :tada: BERT for detecting abusive language(Hate speech+offensive) and predicting rationales is uploaded [here](https://huggingface.co/Hate-speech-CNERG/bert-base-uncased-hatexplain-rationale-two). Be sure to check it out :tada: :tada:.
 
 
 [**BERT-hatexplain-model**](https://huggingface.co/Hate-speech-CNERG/bert-base-uncased-hatexplain), [**Hatexplain_dataset**](https://huggingface.co/datasets/hatexplain), [**Paper link**](https://arxiv.org/abs/2012.10289)
