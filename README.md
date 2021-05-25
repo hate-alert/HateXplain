@@ -2,14 +2,19 @@
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/hatexplain-a-benchmark-dataset-for/hate-speech-detection-on-hatexplain)](https://paperswithcode.com/sota/hate-speech-detection-on-hatexplain?p=hatexplain-a-benchmark-dataset-for)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![PyPI license](https://img.shields.io/pypi/l/ansicolortags.svg)](https://pypi.python.org/pypi/ansicolortags/)
+[![Generic badge](https://img.shields.io/badge/Dataset-Hatexplain-red.svg)](https://huggingface.co/datasets/hatexplain)
+[![Generic badge](https://img.shields.io/badge/Models-Hatexplain-blue.svg)](https://huggingface.co/models?search=hatexplain)
+
+
 # :mag_right: HateXplain: A Benchmark Dataset for Explainable Hate Speech Detection [Accepted at AAAI 2021]
 
 ### :tada: :tada: BERT for detecting abusive language(Hate speech+offensive) and predicting rationales is uploaded [here](https://huggingface.co/Hate-speech-CNERG/bert-base-uncased-hatexplain-rationale-two). Be sure to check it out :tada: :tada:.
 
+#### For more details about our paper
 
-[**BERT-hatexplain-model**](https://huggingface.co/Hate-speech-CNERG/bert-base-uncased-hatexplain), [**Hatexplain_dataset**](https://huggingface.co/datasets/hatexplain), [**Paper link**](https://arxiv.org/abs/2012.10289)
+Binny Mathew, Punyajoy Saha, Seid Muhie Yimam, Chris Biemann, Pawan Goyal, and Animesh Mukherjee "[HateXplain: A Benchmark Dataset for Explainable Hate Speech Detection](https://arxiv.org/abs/2012.10289)". Accepted at AAAI 2021.
 
-## Abstract
+# Abstract
 
 Hate speech is a challenging issue plaguing the online social media. While better models for hate speech detection are continuously being developed, there is little research on the bias and interpretability aspects of hate speech. In this work, we introduce HateXplain, the first benchmark hate speech dataset covering multiple aspects of the issue. Each post in our dataset is annotated from three different perspectives: the basic, commonly used 3-class classification (i.e., hate, offensive or normal), the target community (i.e., the community that has been the victim of hate speech/offensive speech in the post), and the rationales, i.e., the portions of the post on which their labelling decision (as hate, offensive or normal) is based. We utilize existing state-of-the-art models and observe that even models that perform very well in classification do not score high on explainability metrics like model plausibility and faithfulness. We also observe that models, which utilize the human rationales for training, perform better in reducing unintended bias towards target communities. 
 
