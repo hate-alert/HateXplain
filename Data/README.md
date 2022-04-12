@@ -65,5 +65,6 @@ We use Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB downl
  :green_circle::green_circle: You are ready to roll!!! :green_circle::green_circle:
 
 
-
+### Note:
+The data uses the label "homosexual" as defined at collection time; other sexual and gender orientation categories have been pruned from the data due to low incidence; the published version of the paper wrongly mentions the LGBTQ category.
 
