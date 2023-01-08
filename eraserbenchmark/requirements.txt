@@ -1,6 +1,6 @@
 ftfy==5.5.1
 gensim==3.7.1
-numpy==1.16.2
+numpy==1.22.0
 pandas==0.24.2
 pytorch-transformers==1.1.0
 scipy==1.2.1
